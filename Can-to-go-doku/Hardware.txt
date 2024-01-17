@@ -1,0 +1,105 @@
+Abstract:
+- Deutsch 
+- Englisch	
+
+Einleitung:
+- Allgemeines zu CAN
+Controller Area Network (CAN) ist ein standardisiertes, robustes Fahrzeugbussystem, das für die Kommunikation zwischen verschiedenen Steuergeräten (ECUs) in Fahrzeugen und anderen industriellen Anwendungen konzipiert wurde. Es ermöglicht den zuverlässigen Datenaustausch mit hoher Fehlertoleranz und geringer Latenz, was besonders in Echtzeitanwendungen wichtig ist. CAN-Busse verwenden ein Nachrichtenbasiertes Protokoll, bei dem jede Nachricht eine eindeutige ID hat, die ihre Priorität bestimmt. Dieses System ist besonders nützlich bei der Diagnose von Netzwerkproblemen, da die Priorisierung von Nachrichten und Fehlererkennungsmechanismen die Fehlersuche erleichtern. Die physikalischen Aspekte des CAN-Busses, wie Abschlusswiderstände und die Verkabelung (CANL/CANH), sind ebenfalls entscheidend für die Netzwerkintegrität. Die Anpassungsfähigkeit hinsichtlich der Baudrate und die Unterstützung verschiedener Netzwerkstrukturen machen CAN vielseitig einsetzbar.
+
+- Can Datentelegram
+
+
+- Anforderungsanalyse 
+Das "Can to Go"-System wird entwickelt, um Anwendern bei Problemen beim Aufbau eines CAN-Busses zu assistieren und zu diagnostizieren, wo genau die Schwierigkeiten liegen. Es dient als funktionssicherer CAN-Teilnehmer, der in der Lage ist, CAN-Nachrichten zuverlässig zu lesen und zu interpretieren. Kernmerkmale umfassen ein Anschlusskästchen mit SUB-D-Stecker und Status-LEDs, die den Betriebszustand des CAN-Busses anzeigen. Ein optionaler Abschlusswiderstand, der nach Bedarf zugeschaltet werden kann, sowie die Anpassungsfähigkeit der Baudrate gehören ebenfalls zu den wesentlichen Anforderungen. Darüber hinaus wird das System die CAN-Nachrichten und die zugehörigen Sender-IDs sichtbar machen.
+
+- Endprodukt
+Das fertige CAN to go system 
+
+
+
+
+Hardware:
+Der Hardwareaufbau beruht auf einer Plattine, auf der die Einzelnen Hardware komponenten verbaut sind. Der Leiterplattenentwurf erfolte mittels KiCad. Dafür wurden zuerst die Benötigten Bauteile Hinzugefügt und zu deren Footprints zugeordnet. Die Footprints bestimmen wie die Bauteile auf der Leiterplatte plaziert werden und spiegeln deren physische größe wieder. Danach wurde zu Pcbnew, dem Tool für das Leiterplattenlayout im KiCad gewechselt, um dort die Bauteile anzuordnen. Dabei wurde auf Logische Gruppierungen und der Minimierung von leitungslängen geachtet. Nachdem die Leiterplatte fertig designt wurde, konnte eine Gerber Datei erstellt werden, welche alle notwendigen Informationen für die Leiterplattenherstellung beinhaltet. Die Leiterplatte wurde dann bei ... bestellt. Es wurde darauf geachtet, das die verbauten Komponenten noch nicht mit verbaut wurden, da das zu kostenintensiv gewesen wäre. Die einzelnen Bauteile wurden bei Mouser Electronics bestellt. Mittels Lötpaste wurden die Bauteile dann auf die leiterplatte gelötet. Dabei wurde darauf geachtet sauber zu arbeiten und Fehler zu minimieren, da eine verbindung von Falschen Kontakten fatale Folgen haben kann. Die einzelnen Preise der Bauteile sowie der Leiterplatte sind in der Tabelle ... zu finden.
+
+- ESP32 
+\subsection{ESP32 als zentraler Mikrocontroller}
+Der ESP32 ist das Herzstück unseres eingebetteten Systems und übernimmt die zentrale Verarbeitung und Koordination aller Aufgaben. Als hochintegrierter Mikrocontroller verbindet er verschiedene Elemente des Systems, wie die CAN-Schnittstelle, das Display, Status-LEDs und Taster, zu einem funktionierenden Ganzen.
+
+Im Rahmen der CAN-Kommunikation liest der ESP32 die über den CAN-Bus gesendeten Nachrichten und verarbeitet diese. 
+
+Der ESP32 steuert das Display über das I2C-Protokoll, wobei ein Logikpegelwandler für die Anpassung der unterschiedlichen Spannungsniveaus zwischen dem 3,3-Volt-System des ESP32 und dem 5-Volt-Display verwendet wird. 
+
+Die Taster sind über Pull-up-Widerstände an den ESP32 angeschlossen und ermöglichen es den Benutzern, durch einfaches Drücken die Konfigurationseinstellungen vorzunehmen. Der ESP32 interpretiert diese Eingaben und führt die entsprechenden Aktionen aus, wie beispielsweise das Wechseln der Baudrate.
+
+Durch seine Vielseitigkeit und leistungsstarke Verarbeitungskapazität bildet der ESP32 das Rückgrat des Systems.
+
+Der ESP32 ist das Herzstück des kompletten Aufbaus. \hier warum der ESP32 gewählt wurde.
+Der ESP32 übernimmt in diesem Projekt folgende Aufgabe:
+- Steuerungsaufgaben: Der ESP32 ist dafür verantwortlich die LEDs auf der Leiterplatte zu steuern.
+- Schnittstellenverwaltung: Der ESP32 diehnt als schnittstelle zwic 
+
+- SUBD Stecker
+Der SUBD Stecker diehnt dazu um CAN Nachrichten in das System einzuführen. Mittels SUBD kann das CAN to go System an das zu überprüfende CAN System angeschlossen werden. Dabei ist CANL an Pin 2, CAN H an Pin 6, GND an Pin 3 und +5V an Pin 9 angeschlossen. Je nach anforderung kann optional ein 120 Ohm widerstand zwischen CAN-Low und CAN-High geschaltet werden. Dies geschieht über den Stecker J4 (Blau umkreist in bild ...). 
+
+- Can Anschluss mit Transciever
+Der MCP2562-E/SN Transceiver spielt eine zentrale Rolle im Hardwareaufbau für die CAN-Kommunikation,
+indem er die Signale aus dem CAN-Netzwerk in digitale Signale umwandelt, die vom ESP32-Mikrocontroller
+verarbeitet werden können. Der Transceiver agiert als Bindeglied zwischen den differenziellen Signalen des
+CAN-Busses und den digitalen I/O-Pins des ESP32. Er wandelt die auf dem CAN-Bus empfangenen Hoch-
+und Niedrigzustände (CAN_H und CAN_L) in logische Pegel um, die der Mikrocontroller verstehen kann.
+Dies ermöglicht eine reibungslose und zuverlässige Kommunikation zwischen den CAN-Geräten und dem
+Mikrocontroller.
+
+- Display
+Das Display dient in unserem eingebetteten System als primäre Benutzerschnittstelle, indem es die Baudrateneinstellungen im Konfigurationsmodus sowie die CAN-Nachrichten und ihre Identifier im Operationsmodus anschaulich visualisiert. In unserem System erfolgt die Kommunikation zwischen dem ESP32-Mikrocontroller und dem Display über das I2C-Protokoll (Inter-Integrated Circuit), einem weit verbreiteten Kommunikationsstandard, der für seine Einfachheit und Effizienz in der synchronen seriellen Datenübertragung bekannt ist.
+
+I2C nutzt nur zwei Leitungen – eine für das serielle Daten-Signal (SDA) und eine für das serielle Clock-Signal (SCL) – und ermöglicht es dem Mikrocontroller, mehrere Geräte über einen einzigen Bus zu steuern, wobei jedes Gerät über eine einzigartige Adresse identifiziert wird. Dieser Bus ermöglicht eine bidirektionale Kommunikation, was bedeutet, dass der ESP32 Daten an das Display senden und gleichzeitig Statusinformationen vom Display empfangen kann. 
+
+Da der ESP32 mit einer Logikspannung von 3,3 Volt arbeitet, während das Display für eine Betriebsspannung von 5 Volt ausgelegt ist, wurde ein Logikpegelwandler verwendet, um die Signale zwischen diesen beiden Spannungsebenen zu übersetzen (siehe Abschnitt ...).
+
+- Status LEDS
+In unserem eingebetteten System fungieren Leuchtdioden (LEDs) als visuelle Indikatoren für verschiedene Zustände des Gerätes. Ihre Hauptfunktion besteht darin, den Benutzer über den aktuellen CAN Status zu informieren.
+
+\begin{itemize}
+  \item \textbf{Rote LED (D\textit{xx}):} Diese LED beginnt zu leuchten, wenn die Nachrichten auf dem angeschlossenen CAN-Bus nicht interpretiert werden können. Dies dient als Indikator für Störungen oder Fehler im CAN-System.
+  \item \textbf{Grüne LED (D\textit{xx}):} Die grüne LED signalisiert, dass die Nachrichten des CAN-Bus korrekt interpretiert werden und das System ordnungsgemäß funktioniert.
+  \item \textbf{Gelbe LED (D3):} Die Beleuchtung dieser LED zeigt an, dass das System mit Strom versorgt wird, und dient somit als Power-On-Statusanzeige.
+  \item \textbf{Blaue LED (D\textit{xx}):} Diese LED hat eine dual-funktionelle Anzeige: Sie blinkt schnell, um den Empfang von CAN-Nachrichten zu signalisieren, und wechselt zu einem langsamen Blinken, wenn keine CAN-Nachrichten empfangen werden. 
+\end{itemize}
+
+
+Ansteuerung: Die Ansteuerung der LEDs erfolgt direkt durch den ESP32-Mikrocontroller, der die Fähigkeit besitzt, seine GPIO-Pins (General Purpose Input/Output) als Ausgänge zu konfigurieren. Durch Programmierung des Mikrocontrollers kann jeder dieser Pins einen High- oder Low-Zustand annehmen, wobei High bedeutet, dass der Pin eine Spannung ausgibt, die ausreicht, um die LED zum Leuchten zu bringen. Der Low-Zustand hingegen unterbricht den Stromfluss, sodass die LED erlischt.
+
+- Buttons
+In unserem System werden Taster (Buttons) als Eingabemittel für Benutzerinteraktionen verwendet. Sie ermöglichen es dem Benutzer, Steuersignale an den Mikrocontroller zu senden, der diese dann entsprechend der programmierten Logik interpretiert. Die Taster sind einfache, aber effektive Komponenten in der Mensch-Maschine-Interaktion innerhalb eingebetteter Systeme. 
+
+Die drei Taster sind jeweils über einen Pull-up-Widerstand an eine Versorgungsspannung (+3V3) angeschlossen. Dies sorgt dafür, dass das Signal am entsprechenden Eingangspin des ESP32 standardmäßig auf einem hohen Logikniveau (High) liegt. Wird der Taster gedrückt, schließt sich der Stromkreis, und der Eingangspin wird auf das niedrige Logikniveau (Ground) gezogen.Die zusätzlichen Widerstände (R12, R13, R14) dienen als Strombegrenzungswiderstände und schützen den Mikrocontroller vor hohen Strömen, die beim Schließen des Tasterkreises entstehen könnten. Diese Anordnung wird als Pull-up-Konfiguration bezeichnet und ist eine gängige Methode, um den Zustand eines Eingangspins zu definieren, wenn kein Signal anliegt.
+
+Im Konfigurationsmodus unseres Systems ermöglichen es die Taster dem Benutzer, die Einstellungen für die Baudrate zu navigieren und zu bestätigen. Jeder Taster hat eine spezifische Rolle:
+
+\begin{itemize}
+  \item \textbf{Taster S3:} Dieser Taster ermöglicht es dem Benutzer, im Konfigurationsmodus auf dem Display nach oben zu navigieren.
+  
+  \item \textbf{Taster S4:} Nachdem die gewünschte Baudrate ausgewählt wurde, wird Taster S4 verwendet, um die Auswahl zu bestätigen. Dies führt zum Abschluss des Konfigurationsvorgangs und initiiert den Übergang des Systems in den Operationsmodus.
+  
+  \item \textbf{Taster S5:} Sollte der Benutzer im Display nach unten navigieren müssen, wird Taster S5 verwendet.
+\end{itemize}
+
+
+- Logic Level Converter
+Im Kontext eingebetteter Systeme spielt die Signalintegrität zwischen verschiedenen elektronischen Komponenten eine entscheidende Rolle. Verschiedene Bauteile operieren oft mit unterschiedlichen Logikpegeln, was bedeutet, dass die Spannung, die ein High-Signal (logische "1") repräsentiert, zwischen diesen Komponenten variieren kann. Um eine korrekte und sichere Kommunikation zwischen solchen Bauteilen zu gewährleisten, werden Logikpegelwandler eingesetzt. 
+Der Logikpegelwandler auf unserer Leiterplatte dient als bidirektionale Schnittstelle zwischen dem ESP32-Mikrocontroller, welcher mit 3,3 Volt Logikpegel arbeitet, und unserem Display, welches mit einem 5-Volt-System betrieben wird. Dies ist relevant, da eine direkte verbindung der unterschiedlichen Spannungsniveaus zu einem nicht erkennbaren Signal für das Display führt. 
+
+Die Funktion des Logikpegelwandlers basiert auf einer Reihe von Transistoren und Pull-up-Widerständen, die so konfiguriert sind, dass sie ein High-Signal von der niedrigeren Spannung (3,3 V) auf die höhere Spannung (5 V) und umgekehrt ohne Signalverzerrung oder Verlust der Signalintegrität übersetzen. In unserer Anwendung ermöglicht der Logikpegelwandler eine sichere Interaktion zwischen dem ESP32 und dem Display.
+- Stückliste mit Preisen
+
+Software:
+- FSM
+- Uart Controller
+- Display Controller
+- CAN Controller
+- LED Controller
+- Rest API Controller
+- UI 
+
+Ausblick
